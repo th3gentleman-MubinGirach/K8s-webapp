@@ -1,0 +1,99 @@
+<script>
+        function lw()
+        {
+                var i = document.getElementById("in1").value
+                if (i.split(" ").includes("create"))
+                {
+                if(i.split(" ").includes("pod"))
+                {
+                var pod=prompt("enter pod name");
+                var image=prompt("enter image name");
+                i="kubectl run "+pod+" --image "+image;
+                }
+                else if(i.split(" ").includes("deployment"))
+                {
+                var pod=prompt("enter deployment name");
+                var image=prompt("enter image name");
+                i="kubectl create deployment "+pod+" --image "+image;
+                }
+                }
+                else if(i.split(" ").includes("expose"))
+                {
+                var pod=prompt("enter deployment name");
+                var port=prompt("enter port number");
+                i="kubectl expose deployment "+pod+" --port="+port;
+                }
+                else if(i.split(" ").includes("scale"))
+                {
+                var pod=prompt("enter deployment name");
+                var replica=prompt("enter number of replicas");
+                i="kubectl scale deployment "+pod+" --replicas="+replica;
+                }
+                else if(i.split(" ").includes("delete"))
+                {
+                var pod=prompt("enter pod  name");
+                if(pod.localeCompare("all")==0)
+                {
+                i="kubectl delete all --all";
+                }
+                else
+                {
+                i="kubectl delete pod "+pod;
+                }
+                }
+                else if(i.split(" ").includes("get"))
+                {
+                if(i.split(" ").includes("pods"))
+                                {
+                i="kubectl get pods";
+                }
+                else
+                {
+                i="kubectl get deployments";
+                }
+                }
+                var xhr=new XMLHttpRequest(); 
+                xhr.open("GET","http://192.168.99.102/cgi-bin/task9.py?x="+i,true)
+                xhr.send()
+                xhr.onload=function()
+                {
+                        var output=xhr.responseText;
+                        document.getElementById("d1").innerHTML=output
+                }
+        }
+</script>
+<html>
+<head>
+    <title>kubernetes</title>
+    <style>
+            body,html {
+                height:100%;
+                margin: 0;
+                }
+        .bg {
+                background-image:url("https://wallpaperaccess.com/full/6129715.png");
+                height:100%;
+                background-position:center;
+                background-repeat:no-repeat;
+                background-size:cover;
+                }
+
+        </style>
+</head>
+
+
+
+<body style="background-color:lightgrey;">
+<div class="bg">
+<center>
+<h1 style="color:white">kubernetes</h1>
+<label style="color:white">[root@localhost ~]#</label><input style="font-size:1.5vw;" align="middle" id="in1"/>
+</br>
+<pre>
+<div id="d1" class="f" style="color:white">output</div>
+</pre>
+<button style="font-size:1.5vw;" onclick="lw()">click</button>
+</center>
+</div>
+</body>
+</html>
